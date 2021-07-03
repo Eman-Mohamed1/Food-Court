@@ -1,0 +1,68 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="details content">
+      <div>
+      <img  src= "<%= food.poster %>" alt= "<%= food.title %>" > 
+      </div>
+    <div class="content">
+      <h2><%= food.title %></h2>
+      <h3> <%= food.ingredients %></h3>
+      <p><%= food.reciep %></p>
+    </div>
+    <div>
+
+        <video autoplay> 
+          <source src= "<%= food.video %>"  type="video/mp4"> doesn't support video
+        </video>
+
+    </div>
+    <a class="update" data-doc="<%= food._id %>">
+      <img src="/Edit.svg" alt="update icon">
+    </a>
+    <a class="delete" data-doc="<%= food._id %>">
+      <img src="/trashcan.svg" alt="delete icon">
+    </a>
+   
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script>
+    const trashcan = document.querySelector('a.delete');
+    const Edit= document.querySelector('a.update');
+
+
+    trashcan.addEventListener('click', (e) => {
+      const endpoint = `/Kitchen/${trashcan.dataset.doc}`;
+ 
+      fetch(endpoint, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(data => window.location.href = data.redirect)
+      .catch(err => console.log(err));
+    });
+
+
+
+
+
+    Edit.addEventListener('click', (e) => {
+      const endpoint = `/Kitchen/${Edit.dataset.doc}`;
+ 
+      fetch(endpoint, {
+        method: 'PUT',
+      })
+      //.then(response => response.json())       Handle update
+      //.then(data => window.location.href = data.redirect)
+      .catch(err => console.log(err));
+    });
+    
+    
+  </script>
+</body>
+</html>
